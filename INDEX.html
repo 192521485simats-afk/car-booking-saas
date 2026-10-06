@@ -1,0 +1,517 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CabGo - Car Booking SaaS</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f4f7fb;
+            color: #222;
+        }
+
+        header {
+            background: #111827;
+            color: white;
+            padding: 18px 8%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h1 {
+            color: #fbbf24;
+        }
+
+        header span {
+            font-size: 14px;
+            color: #ddd;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            padding: 45px 8%;
+            text-align: center;
+        }
+
+        .hero h2 {
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+
+        .hero p {
+            font-size: 18px;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1100px;
+            margin: 30px auto;
+        }
+
+        .booking-box {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .booking-box h2 {
+            margin-bottom: 20px;
+            color: #111827;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 7px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 15px;
+        }
+
+        button {
+            border: none;
+            padding: 13px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .search-btn {
+            background: #111827;
+            color: white;
+            margin-top: 20px;
+            width: 100%;
+        }
+
+        .search-btn:hover {
+            background: #374151;
+        }
+
+        #results {
+            margin-top: 30px;
+        }
+
+        .section-title {
+            margin-bottom: 15px;
+        }
+
+        .cab-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .cab-card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        .cab-icon {
+            font-size: 45px;
+            margin-bottom: 10px;
+        }
+
+        .cab-card h3 {
+            margin-bottom: 8px;
+        }
+
+        .cab-card p {
+            margin: 7px 0;
+            color: #555;
+        }
+
+        .price {
+            font-size: 22px;
+            font-weight: bold;
+            color: #16a34a;
+            margin: 12px 0;
+        }
+
+        .book-btn {
+            background: #f59e0b;
+            color: white;
+            width: 100%;
+        }
+
+        .book-btn:hover {
+            background: #d97706;
+        }
+
+        .confirmation {
+            display: none;
+            background: #dcfce7;
+            border: 2px solid #22c55e;
+            padding: 25px;
+            border-radius: 12px;
+            margin-top: 30px;
+        }
+
+        .confirmation h2 {
+            color: #15803d;
+            margin-bottom: 15px;
+        }
+
+        .confirmation p {
+            margin: 8px 0;
+        }
+
+        footer {
+            background: #111827;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: 50px;
+        }
+
+        @media (max-width: 800px) {
+            .form-grid,
+            .cab-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero h2 {
+                font-size: 28px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>🚕 CabGo</h1>
+    <span>Cloud Car Booking Reservation System</span>
+</header>
+
+<section class="hero">
+    <h2>Book Your Ride Easily</h2>
+    <p>Search, compare and reserve cabs online</p>
+</section>
+
+<div class="container">
+
+    <div class="booking-box">
+
+        <h2>🔎 Search for Cabs</h2>
+
+        <div class="form-grid">
+
+            <div>
+                <label>Booking Type</label>
+                <select id="bookingType">
+                    <option value="Rental">Rental</option>
+                    <option value="Outstation">Outstation</option>
+                </select>
+            </div>
+
+            <div>
+                <label>From</label>
+                <input type="text" id="from" placeholder="Eg: Chennai">
+            </div>
+
+            <div>
+                <label>To</label>
+                <input type="text" id="to" placeholder="Eg: Bangalore">
+            </div>
+
+            <div>
+                <label>Package Type</label>
+                <select id="packageType">
+                    <option value="Local">Local Package</option>
+                    <option value="Outstation">Outstation Package</option>
+                    <option value="Airport">Airport Transfer</option>
+                    <option value="Round Trip">Round Trip</option>
+                </select>
+            </div>
+
+            <div>
+                <label>Hours / Days</label>
+                <select id="duration">
+                    <option value="4 Hours">4 Hours</option>
+                    <option value="8 Hours">8 Hours</option>
+                    <option value="12 Hours">12 Hours</option>
+                    <option value="1 Day">1 Day</option>
+                    <option value="2 Days">2 Days</option>
+                    <option value="3 Days">3 Days</option>
+                </select>
+            </div>
+
+            <div>
+                <label>Travel Date</label>
+                <input type="date" id="date">
+            </div>
+
+            <div>
+                <label>Passengers</label>
+                <select id="passengers">
+                    <option value="1">1 Passenger</option>
+                    <option value="2">2 Passengers</option>
+                    <option value="3">3 Passengers</option>
+                    <option value="4">4 Passengers</option>
+                    <option value="5">5 Passengers</option>
+                    <option value="6">6 Passengers</option>
+                    <option value="7">7 Passengers</option>
+                </select>
+            </div>
+
+        </div>
+
+        <button class="search-btn" onclick="searchCabs()">
+            🔎 Search Cabs
+        </button>
+
+    </div>
+
+
+    <div id="results"></div>
+
+
+    <div class="confirmation" id="confirmation">
+
+        <h2>✅ Booking Confirmed!</h2>
+
+        <p><strong>Booking ID:</strong> <span id="bookingId"></span></p>
+
+        <p><strong>Customer:</strong> <span id="customerName"></span></p>
+
+        <p><strong>Cab:</strong> <span id="selectedCab"></span></p>
+
+        <p><strong>From:</strong> <span id="confirmFrom"></span></p>
+
+        <p><strong>To:</strong> <span id="confirmTo"></span></p>
+
+        <p><strong>Booking Type:</strong> <span id="confirmType"></span></p>
+
+        <p><strong>Package:</strong> <span id="confirmPackage"></span></p>
+
+        <p><strong>Duration:</strong> <span id="confirmDuration"></span></p>
+
+        <p><strong>Travel Date:</strong> <span id="confirmDate"></span></p>
+
+        <p><strong>Passengers:</strong> <span id="confirmPassengers"></span></p>
+
+        <p><strong>Total Fare:</strong> ₹<span id="confirmFare"></span></p>
+
+    </div>
+
+</div>
+
+
+<footer>
+    <p>© 2026 CabGo | Cloud-Based Car Booking SaaS Application</p>
+    <p>Developed using HTML, CSS and JavaScript</p>
+</footer>
+
+
+<script>
+
+    let searchedCabs = [];
+
+    function searchCabs() {
+
+        const type = document.getElementById("bookingType").value;
+        const from = document.getElementById("from").value.trim();
+        const to = document.getElementById("to").value.trim();
+        const packageType = document.getElementById("packageType").value;
+        const duration = document.getElementById("duration").value;
+        const date = document.getElementById("date").value;
+        const passengers = document.getElementById("passengers").value;
+
+        if (from === "" || to === "" || date === "") {
+            alert("Please enter From, To and Travel Date.");
+            return;
+        }
+
+        searchedCabs = [
+
+            {
+                name: "Mini Cab",
+                icon: "🚗",
+                seats: 4,
+                price: 850
+            },
+
+            {
+                name: "Sedan",
+                icon: "🚘",
+                seats: 4,
+                price: 1200
+            },
+
+            {
+                name: "SUV",
+                icon: "🚙",
+                seats: 6,
+                price: 1800
+            },
+
+            {
+                name: "Premium SUV",
+                icon: "🚐",
+                seats: 7,
+                price: 2500
+            }
+
+        ];
+
+        let html = `
+            <h2 class="section-title">
+                🚕 Available Cabs
+            </h2>
+
+            <p style="margin-bottom:20px;">
+                Showing cabs from <strong>${from}</strong>
+                to <strong>${to}</strong>
+            </p>
+
+            <div class="cab-grid">
+        `;
+
+        searchedCabs.forEach((cab, index) => {
+
+            if (parseInt(passengers) <= cab.seats) {
+
+                html += `
+
+                    <div class="cab-card">
+
+                        <div class="cab-icon">
+                            ${cab.icon}
+                        </div>
+
+                        <h3>${cab.name}</h3>
+
+                        <p>👥 Seats: ${cab.seats}</p>
+
+                        <p>📍 ${from} → ${to}</p>
+
+                        <p>📦 ${packageType}</p>
+
+                        <p>⏱️ ${duration}</p>
+
+                        <div class="price">
+                            ₹${cab.price}
+                        </div>
+
+                        <button class="book-btn"
+                            onclick="bookCab(${index})">
+                            🚕 Book Now
+                        </button>
+
+                    </div>
+                `;
+            }
+
+        });
+
+        html += `</div>`;
+
+        document.getElementById("results").innerHTML = html;
+
+        document.getElementById("confirmation").style.display = "none";
+
+        document.getElementById("results").scrollIntoView({
+            behavior: "smooth"
+        });
+    }
+
+
+    function bookCab(index) {
+
+        const cab = searchedCabs[index];
+
+        const customerName = prompt(
+            "Enter your name:"
+        );
+
+        if (!customerName) {
+            alert("Booking cancelled.");
+            return;
+        }
+
+        const from = document.getElementById("from").value;
+        const to = document.getElementById("to").value;
+        const type = document.getElementById("bookingType").value;
+        const packageType = document.getElementById("packageType").value;
+        const duration = document.getElementById("duration").value;
+        const date = document.getElementById("date").value;
+        const passengers = document.getElementById("passengers").value;
+
+        const bookingId =
+            "CAB" +
+            Math.floor(
+                100000 + Math.random() * 900000
+            );
+
+        document.getElementById("bookingId").innerText =
+            bookingId;
+
+        document.getElementById("customerName").innerText =
+            customerName;
+
+        document.getElementById("selectedCab").innerText =
+            cab.name;
+
+        document.getElementById("confirmFrom").innerText =
+            from;
+
+        document.getElementById("confirmTo").innerText =
+            to;
+
+        document.getElementById("confirmType").innerText =
+            type;
+
+        document.getElementById("confirmPackage").innerText =
+            packageType;
+
+        document.getElementById("confirmDuration").innerText =
+            duration;
+
+        document.getElementById("confirmDate").innerText =
+            date;
+
+        document.getElementById("confirmPassengers").innerText =
+            passengers;
+
+        document.getElementById("confirmFare").innerText =
+            cab.price;
+
+        document.getElementById("confirmation").style.display =
+            "block";
+
+        document.getElementById("confirmation").scrollIntoView({
+            behavior: "smooth"
+        });
+
+    }
+
+</script>
+
+</body>
+</html>
+```
